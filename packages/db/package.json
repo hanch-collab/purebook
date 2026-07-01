@@ -1,0 +1,23 @@
+{
+  "name": "@purebook/db",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "scripts": {
+    "db:push":    "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:seed":    "tsx src/seed/index.ts",
+    "db:studio":  "prisma studio",
+    "generate":   "prisma generate"
+  },
+  "dependencies": {
+    "@prisma/client": "5.16.2"
+  },
+  "devDependencies": {
+    "prisma": "5.16.2",
+    "tsx": "4.16.2",
+    "typescript": "5.5.3",
+    "bcrypt": "5.1.1",
+    "@types/bcrypt": "5.0.2"
+  }
+}

@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --pb-bg: #EDEAE3;
+  --pb-surface: #FFFFFF;
+  --pb-surface-1: #F4F2EE;
+  --pb-border: #E4DFD8;
+  --pb-text: #0E0E0C;
+  --pb-gold: #C9A84C;
+}
+
+body {
+  background-color: var(--pb-bg);
+  color: var(--pb-text);
+}
+
+* {
+  box-sizing: border-box;
+}
