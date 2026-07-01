@@ -138,6 +138,72 @@ async function main() {
   }
   console.log('✅ Clients:', clients.length)
 
+
+  // ── Appointments ────────────────────────────────────────────────
+  const today = new Date()
+  today.setHours(12, 0, 0, 0) // noon local to avoid UTC boundary issues
+
+  const allSpecialists = await prisma.specialist.findMany({ where: { siteId: site.id } })
+  const allCustomers   = await prisma.customer.findMany({ where: { siteId: site.id } })
+  const allServices    = await prisma.service.findMany({ where: { siteId: site.id } })
+
+  const sp = (id: string) => allSpecialists.find(s => s.staffId === id)!
+  const cu = (id: string) => allCustomers.find(c => c.customerId === id)!
+  const sv = (id: string) => allServices.find(s => s.serviceId === id)!
+
+  const apptSeeds = [
+    { custId: 'C00001', specId: 'ST00001', svcId: 'SVC001', start: '09:00', end: '11:30', status: 'CONFIRMED' },
+    { custId: 'C00002', specId: 'ST00001', svcId: 'SVC002', start: '12:00', end: '13:00', status: 'CONFIRMED'   },
+    { custId: 'C00003', specId: 'ST00002', svcId: 'SVC003', start: '09:30', end: '10:30', status: 'CONFIRMED'   },
+    { custId: 'C00004', specId: 'ST00002', svcId: 'SVC004', start: '11:00', end: '11:45', status: 'UNCONFIRMED' },
+    { custId: 'C00005', specId: 'ST00003', svcId: 'SVC001', start: '10:00', end: '12:30', status: 'CONFIRMED'   },
+    { custId: 'C00001', specId: 'ST00003', svcId: 'SVC005', start: '14:00', end: '15:30', status: 'CONFIRMED'   },
+    { custId: 'C00002', specId: 'ST00004', svcId: 'SVC006', start: '09:00', end: '10:00', status: 'CONFIRMED'   },
+    { custId: 'C00003', specId: 'ST00004', svcId: 'SVC003', start: '11:00', end: '13:30', status: 'CONFIRMED'   },
+  ]
+
+  // Clear existing appointment data before re-seeding
+  await prisma.appointmentService.deleteMany({ where: { appointment: { siteId: site.id } } })
+  await prisma.appointment.deleteMany({ where: { siteId: site.id } })
+
+  let apptCount = 0
+  for (const a of apptSeeds) {
+    const specialist = sp(a.specId)
+    const customer   = cu(a.custId)
+    const service    = sv(a.svcId)
+    if (!specialist || !customer || !service) {
+      console.warn(`  ⚠ Skipping appt — missing: spec=${!!specialist} cust=${!!customer} svc=${!!service}`)
+      continue
+    }
+
+    const appt = await prisma.appointment.create({
+      data: {
+        siteId:          site.id,
+        customerId:      customer.id,
+        bookedBy:        'seed',
+        appointmentDate: today,
+        status:          a.status as any,
+        repeat:          'OFF',
+        ends:            'NEVER',
+      },
+    })
+
+    await prisma.appointmentService.create({
+      data: {
+        appointmentId: appt.id,
+        serviceId:     service.id,
+        specialistId:  specialist.id,
+        startTime:     a.start,
+        endTime:       a.end,
+        price:         service.price,
+        duration:      service.duration,
+        isPreferred:   true,
+      },
+    })
+    apptCount++
+  }
+  console.log(`✅ Appointments: ${apptCount}`)
+
   console.log('\n🎉 Seed complete!')
   console.log('   Login: owner@purebook.dev / purebook2024!')
 }
