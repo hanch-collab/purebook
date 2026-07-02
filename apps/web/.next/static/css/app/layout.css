@@ -522,9 +522,6 @@ video {
 .left-1 {
   left: 0.25rem;
 }
-.left-\[-1px\] {
-  left: -1px;
-}
 .left-\[-46px\] {
   left: -46px;
 }
@@ -551,6 +548,9 @@ video {
 }
 .z-10 {
   z-index: 10;
+}
+.z-20 {
+  z-index: 20;
 }
 .z-\[3\] {
   z-index: 3;
@@ -756,6 +756,9 @@ video {
 .truncate {
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.whitespace-nowrap {
   white-space: nowrap;
 }
 .rounded {
@@ -1044,10 +1047,6 @@ body {
 
 .last\:border-r-0:last-child {
   border-right-width: 0px;
-}
-
-.hover\:bg-pb-gold\/5:hover {
-  background-color: rgb(201 168 76 / 0.05);
 }
 
 .hover\:bg-white\/5:hover {
