@@ -588,6 +588,9 @@ video {
 .grid {
   display: grid;
 }
+.hidden {
+  display: none;
+}
 .h-10 {
   height: 2.5rem;
 }
@@ -695,6 +698,9 @@ video {
 }
 .w-px {
   width: 1px;
+}
+.w-\[64px\] {
+  width: 64px;
 }
 .min-w-\[148px\] {
   min-width: 148px;

@@ -1,6 +1,3 @@
 {
-  "/page": "app/page.js",
-  "/api/calendar/day/route": "app/api/calendar/day/route.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/(dashboard)/calendar/page": "app/(dashboard)/calendar/page.js"
 }

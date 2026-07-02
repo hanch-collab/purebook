@@ -169,9 +169,14 @@ export default function CalendarPage() {
       <div className="flex flex-1 overflow-hidden">
 
         {/* Time column */}
-        <div className="w-[50px] flex-shrink-0 border-r border-pb-border bg-pb-bg flex flex-col">
+        <div className="w-[64px] flex-shrink-0 border-r border-pb-border bg-pb-bg flex flex-col">
           <div className="h-[52px] border-b border-pb-border flex-shrink-0" />
-          <div className="overflow-hidden flex-1">
+          <div className="overflow-hidden flex-1 relative">
+            {nowTop !== null && (
+              <div className="absolute right-0 z-20 pointer-events-none" style={{ top: nowTop - 9 }}>
+                <div className="bg-pb-gold text-white text-[9px] font-semibold px-1.5 py-0.5 rounded">{nowLabel}</div>
+              </div>
+            )}
             {hours.map(h => (
               <div key={h} className="flex items-start justify-end pr-2 pt-0.5 text-[10px] text-[#B0AA9E]" style={{ height: CELL_H }}>
                 {h === 12 ? "12:00 PM" : h > 12 ? `${h-12}:00 PM` : `${h}:00 AM`}
@@ -212,7 +217,7 @@ export default function CalendarPage() {
                 {/* Now-line — spans full width, rendered once */}
                 {nowTop !== null && (
                   <div className="absolute left-0 right-0 z-20 pointer-events-none" style={{ top: nowTop }}>
-                    <div className="absolute left-[-46px] top-[-9px] bg-pb-gold text-white text-[9px] font-semibold px-1.5 py-0.5 rounded z-20">
+                    <div className="hidden">
                       {nowLabel}
                     </div>
                     <div className="h-[1.5px] bg-pb-gold w-full relative">
